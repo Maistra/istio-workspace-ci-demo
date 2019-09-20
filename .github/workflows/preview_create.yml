@@ -18,7 +18,7 @@ jobs:
         docker build . --file Dockerfile --tag docker.io/aslakknutsen/istio-workspace-ci-demo:$GITHUB_SHA
         docker push docker.io/aslakknutsen/istio-workspace-ci-demo:$GITHUB_SHA
     - name: Deploy preview
-      uses: docker://aslakknutsen/istio-workspaces:latest
+      uses: docker://docker.io/aslakknutsen/istio-workspace:latest
       with:
         entrypoint: ike
         args: create -s $GITHUB_BRANCH -n aslak-devconf --route header:x-test-suite=aslak -d ratings-v1 -i docker.io/aslakknutsen/istio-workspace-ci-demo:$GITHUB_SHA
