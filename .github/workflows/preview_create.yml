@@ -24,7 +24,7 @@ jobs:
         TOKEN: ${{ secrets.K8S_TOKEN }}
         NAMESPACE: aslak-devconf
         ACTION: create
-        SESSION: ${{ GITHUB_BRANCH }}
+        SESSION: ${{ github.ref }}
         DEPLOYMENT: ratings-v1
         ROUTE: header:x-test-suite=aslak
         IMAGE: docker.io/aslakknutsen/istio-workspace-ci-demo:$GITHUB_SHA
