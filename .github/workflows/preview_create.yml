@@ -16,16 +16,9 @@ jobs:
       run: |
         docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
         docker build . --file Dockerfile --tag docker.io/aslakknutsen/istio-workspace-ci-demo:$GITHUB_SHA
+        docker push docker.io/aslakknutsen/istio-workspace-ci-demo:$GITHUB_SHA
     - name: Deploy preview
       uses: docker://aslakknutsen/istio-workspaces:latest
-      entrypoint: ike_actions.sh
-      env:
-        SERVER: ${{ secrets.K8S_API_SERVER }}
-        TOKEN: ${{ secrets.K8S_TOKEN }}
-        NAMESPACE: aslak-devconf
-        ACTION: create
-        SESSION: $GITHUB_BRANCH
-        DEPLOYMENT: ratings-v1
-        ROUTE: header:x-test-suite=aslak
-        IMAGE: docker.io/aslakknutsen/istio-workspace-ci-demo:$GITHUB_SHA
-        
+      with:
+        entrypoint: ike
+        args: create -s $GITHUB_BRANCH -n aslak-devconf --route header:x-test-suite=aslak -d ratings-v1 -i docker.io/aslakknutsen/istio-workspace-ci-demo:$GITHUB_SHA
