@@ -30,6 +30,8 @@ jobs:
         IKE_IMAGE: docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
       with:
         entrypoint: ike_actions.sh
+    - name: Sleep
+      run: sleep 3
     - name: Deploy remove
       uses: docker://docker.io/aslakknutsen/istio-workspace:latest
       env:
