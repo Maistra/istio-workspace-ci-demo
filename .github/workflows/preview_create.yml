@@ -31,7 +31,7 @@ jobs:
       with:
         entrypoint: ike_actions.sh
     - name: Sleep
-      run: sleep 10
+      run: sleep 11
     - name: Deploy remove
       uses: docker://docker.io/aslakknutsen/istio-workspace:latest
       env:
