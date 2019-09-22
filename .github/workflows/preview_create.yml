@@ -20,13 +20,24 @@ jobs:
     - name: Deploy preview
       uses: docker://docker.io/aslakknutsen/istio-workspace:latest
       env:
+        ACTION: create
         SERVER: ${{ secrets.K8S_API_SERVER }}
         TOKEN: ${{ secrets.K8S_TOKEN }}
-        NAMESPACE: aslak-devconf
-        ACTION: create
-        SESSION: ${{ github.head_ref }}
-        DEPLOYMENT: ratings-v1
-        ROUTE: header:x-test-suite=aslak
-        IMAGE: docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
+        IKE_NAMESPACE: aslak-devconf
+        IKE_SESSION: ${{ github.head_ref }}
+        IKE_DEPLOYMENT: ratings-v1
+        IKE_ROUTE: header:x-test-suite=aslak
+        IKE_IMAGE: docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
       with:
         entrypoint: ike_actions.sh
+    - name: Deploy remove
+      uses: docker://docker.io/aslakknutsen/istio-workspace:latest
+      env:
+        ACTION: delete
+        SERVER: ${{ secrets.K8S_API_SERVER }}
+        TOKEN: ${{ secrets.K8S_TOKEN }}
+        IKE_NAMESPACE: aslak-devconf
+        IKE_SESSION: ${{ github.head_ref }}
+        IKE_DEPLOYMENT: ratings-v1
+      with:
+        entrypoint: ike_actions.sh        
