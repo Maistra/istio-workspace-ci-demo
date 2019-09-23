@@ -18,28 +18,24 @@ jobs:
         docker build . --file Dockerfile --tag docker.io/aslakknutsen/istio-workspace-ci-demo:$GITHUB_SHA
         docker push docker.io/aslakknutsen/istio-workspace-ci-demo:$GITHUB_SHA
     - name: Deploy preview
-      uses: docker://docker.io/aslakknutsen/istio-workspace:latest
-      env:
-        ACTION: create
-        SERVER: ${{ secrets.K8S_API_SERVER }}
-        TOKEN: ${{ secrets.K8S_TOKEN }}
-        IKE_NAMESPACE: aslak-devconf
-        IKE_SESSION: ${{ github.head_ref }}
-        IKE_DEPLOYMENT: ratings-v1
-        IKE_ROUTE: header:x-test-suite=aslak
-        IKE_IMAGE: docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
+      uses: aslakknutsen/istio-workspace-action@master
       with:
-        entrypoint: ike_actions.sh
+        action: create
+        server: ${{ secrets.K8S_API_SERVER }}
+        token: ${{ secrets.K8S_TOKEN }}
+        namespace: aslak-devconf
+        session: ${{ github.head_ref }}
+        deployment: ratings-v1
+        route: header:x-test-suite=aslak
+        image: docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
     - name: Sleep
       run: sleep 11
-    - name: Deploy remove
-      uses: docker://docker.io/aslakknutsen/istio-workspace:latest
-      env:
-        ACTION: delete
-        SERVER: ${{ secrets.K8S_API_SERVER }}
-        TOKEN: ${{ secrets.K8S_TOKEN }}
-        IKE_NAMESPACE: aslak-devconf
-        IKE_SESSION: ${{ github.head_ref }}
-        IKE_DEPLOYMENT: ratings-v1
+    - name: Undeploy preview
+      uses: aslakknutsen/istio-workspace-action@master
       with:
-        entrypoint: ike_actions.sh        
+        action: delete
+        server: ${{ secrets.K8S_API_SERVER }}
+        token: ${{ secrets.K8S_TOKEN }}
+        namespace: aslak-devconf
+        session: ${{ github.head_ref }}
+        deployment: ratings-v1
