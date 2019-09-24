@@ -19,7 +19,7 @@ jobs:
         docker push docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
     - name: Deploy preview
       uses: aslakknutsen/istio-workspace-action@master
-      if: contains(join(github.event.labels.*.name), 'preview') 
+      if: ${{ contains(join(github.event.labels.*.name), 'preview') }}
       with:
         action: create
         server: ${{ secrets.K8S_API_SERVER }}
@@ -33,7 +33,7 @@ jobs:
       run: sleep 10
     - name: Undeploy preview
       uses: aslakknutsen/istio-workspace-action@master
-      if: !contains(join(github.event.labels.*.name), 'preview')
+      if: ${{ !contains(join(github.event.labels.*.name), 'preview') }}
       with:
         action: delete
         server: ${{ secrets.K8S_API_SERVER }}
