@@ -14,7 +14,10 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: |
-        ${{ github.event.labels.*.name }}
+        echo ${{ github.event.labels.*.name }}
+        echo ${{ join(github.event.labels.*.name) }}
+        echo ${{ contains(join(github.event.labels.*.name), 'preview') }}
+        echo ${{ !contains(join(github.event.labels.*.name), 'preview') }}
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker build . --file Dockerfile --tag docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
         docker push docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
