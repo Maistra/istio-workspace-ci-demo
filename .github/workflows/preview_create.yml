@@ -47,7 +47,7 @@ jobs:
         docker push docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
     - name: Deploy preview
       uses: aslakknutsen/istio-workspace-action@master
-      if: ${{ contains(toJson(github.event.pull_request.labels.*.name), 'preview') }}
+      if: github.event.pull_request.user.login == 'aslakknutsen'
       with:
         action: create
         server: ${{ secrets.K8S_API_SERVER }}
