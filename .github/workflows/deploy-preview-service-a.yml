@@ -1,0 +1,22 @@
+name: Deploy Preview Service A
+
+on:
+  pull_request:
+    types: [labeled, unlabeled]
+
+jobs:
+
+  preview-deploy:
+    runs-on: ubuntu-latest
+    needs: build-service-a
+    steps:
+    - name: Deploy preview
+      uses: aslakknutsen/istio-workspace-action@master
+      working-directory: service-a
+      if: true == contains(join(github.event.pull_request.labels.*.name), 'preview')
+      with:
+        action: create
+        server: ${{ secrets.K8S_API_SERVER }}
+        token: ${{ secrets.K8S_TOKEN }}
+        session: ${{ github.head_ref }}
+        image: docker.io/aslakknutsen/istio-workspace-ci-demo-service-a:${{ github.sha }}

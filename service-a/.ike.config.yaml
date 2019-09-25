@@ -1,0 +1,7 @@
+create:
+  deployment: ratings-v1
+  namespace: aslak-devconf
+  route: header:x-test-suite=aslak
+delete:
+  deployment: ratings-v1
+  namespace: aslak-devconf
