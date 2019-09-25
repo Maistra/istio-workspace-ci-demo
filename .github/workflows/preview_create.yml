@@ -57,7 +57,7 @@ jobs:
       run: sleep 10
     - name: Undeploy preview
       uses: aslakknutsen/istio-workspace-action@master
-      #if: ${{ !contains(toJson(github.event.pull_request.labels.*.name), 'preview') }}
+      if: contains(join(github.event.pull_request.labels.*.name), 'preview')
       with:
         action: delete
         server: ${{ secrets.K8S_API_SERVER }}
