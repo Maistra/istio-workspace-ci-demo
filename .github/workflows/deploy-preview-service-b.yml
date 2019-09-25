@@ -10,7 +10,6 @@ jobs:
 
   preview-deploy:
     runs-on: ubuntu-latest
-    needs: build-service-b
     steps:
     - name: Deploy preview
       uses: aslakknutsen/istio-workspace-action@master

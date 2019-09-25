@@ -5,12 +5,11 @@ on:
     types: [labeled]
     paths:
       - 'service-a/*'
-      
+
 jobs:
 
   preview-deploy:
     runs-on: ubuntu-latest
-    needs: build-service-a
     steps:
     - name: Deploy preview
       uses: aslakknutsen/istio-workspace-action@master
