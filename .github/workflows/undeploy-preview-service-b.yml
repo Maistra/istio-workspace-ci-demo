@@ -11,12 +11,12 @@ jobs:
   preview-undeploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Undeploy preview
-        uses: aslakknutsen/istio-workspace-action@master
-        if: false == contains(join(github.event.pull_request.labels.*.name), 'preview')
-        with:
-          action: delete
-          server: ${{ secrets.K8S_API_SERVER }}
-          token: ${{ secrets.K8S_TOKEN }}
-          config: service-b/.ike.config.yaml
-          session: ${{ github.head_ref }}
+    - name: Undeploy preview
+      uses: aslakknutsen/istio-workspace-action@master
+      if: false == contains(join(github.event.pull_request.labels.*.name), 'preview')
+      with:
+        action: delete
+        server: ${{ secrets.K8S_API_SERVER }}
+        token: ${{ secrets.K8S_TOKEN }}
+        config: service-b/.ike.config.yaml
+        session: ${{ github.head_ref }}
