@@ -6,44 +6,25 @@ on:
 
 jobs:
 
-  preview:
+  build:
  
     runs-on: ubuntu-latest
  
     steps:
-#    - name: Dump GitHub context
-#      env:
-#        GITHUB_CONTEXT: ${{ toJson(github.event.pull_request.labels.*.name) }}
-#      run: echo "$GITHUB_CONTEXT"
-#    - name: Dump job context
-#      env:
-#        JOB_CONTEXT: ${{ toJson(job) }}
-#      run: echo "$JOB_CONTEXT"
-#    - name: Dump steps context
-#      env:
-#        STEPS_CONTEXT: ${{ toJson(steps) }}
-#      run: echo "$STEPS_CONTEXT"
-#    - name: Dump runner context
-#      env:
-#        RUNNER_CONTEXT: ${{ toJson(runner) }}
-#      run: echo "$RUNNER_CONTEXT"
-#    - name: Dump strategy context
-#      env:
-#        STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-#      run: echo "$STRATEGY_CONTEXT"
-#    - name: Dump matrix context
-#      env:
-#        MATRIX_CONTEXT: ${{ toJson(matrix) }}
-#      run: echo "$MATRIX_CONTEXT"    
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker build . --file Dockerfile --tag docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
         docker push docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
+  
+  preview-deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
     - name: Deploy preview
       uses: aslakknutsen/istio-workspace-action@master
-      if: contains(join(github.event.pull_request.labels.*.name), 'preview') == true
+      if: true == contains(join(github.event.pull_request.labels.*.name), 'preview')
       with:
         action: create
         server: ${{ secrets.K8S_API_SERVER }}
@@ -53,11 +34,13 @@ jobs:
         deployment: ratings-v1
         route: header:x-test-suite=aslak
         image: docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
-    - name: Sleep
-      run: sleep 10
-    - name: Undeploy preview
+  
+  preview-undeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Undeploy preview
       uses: aslakknutsen/istio-workspace-action@master
-      if: contains(join(github.event.pull_request.labels.*.name), 'preview')
+      if: false == contains(join(github.event.pull_request.labels.*.name), 'preview')
       with:
         action: delete
         server: ${{ secrets.K8S_API_SERVER }}
