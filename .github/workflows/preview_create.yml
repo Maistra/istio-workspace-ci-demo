@@ -39,7 +39,7 @@ jobs:
     - name: Build the Docker image
       run: |
         echo ${{ github.event.pull_request.labels.*.name }}
-        echo ${{ to_json(github.event.pull_request.labels.*.name) }}
+        echo ${{ toJson(github.event.pull_request.labels.*.name) }}
         echo ${{ contains(join(github.event.pull_request.labels.*.name), 'preview') }}
         echo ${{ !contains(join(github.event.pull_request.labels.*.name), 'preview') }}
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
