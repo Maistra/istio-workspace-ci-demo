@@ -11,8 +11,8 @@ jobs:
     needs: build-service-a
     steps:
     - name: Deploy preview
-      uses: aslakknutsen/istio-workspace-action@master
       working-directory: service-a
+      uses: aslakknutsen/istio-workspace-action@master
       if: true == contains(join(github.event.pull_request.labels.*.name), 'preview')
       with:
         action: create
