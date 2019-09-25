@@ -38,16 +38,12 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: |
-        echo ${{ github.event.pull_request.labels.*.name }}
-        echo ${{ toJson(github.event.pull_request.labels.*.name) }}
-        echo ${{ contains(join(github.event.pull_request.labels.*.name), 'preview') }}
-        echo ${{ !contains(join(github.event.pull_request.labels.*.name), 'preview') }}
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker build . --file Dockerfile --tag docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
         docker push docker.io/aslakknutsen/istio-workspace-ci-demo:${{ github.sha }}
     - name: Deploy preview
       uses: aslakknutsen/istio-workspace-action@master
-      if: github.event.pull_request.user.login == 'aslakknutsen'
+      if: github.event.pull_request.labels.*.name == 'aslakknutsen'
       with:
         action: create
         server: ${{ secrets.K8S_API_SERVER }}
