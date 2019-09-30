@@ -2,7 +2,7 @@ name: UnDeploy Preview Service A
 
 on:
   pull_request:
-    types: [unlabeled]
+    types: [unlabeled, closed]
     paths:
       - 'service-a/*'
 
@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Undeploy preview
       uses: aslakknutsen/istio-workspace-action@master
-      if: false == contains(join(github.event.pull_request.labels.*.name), 'preview')
+      if: false == contains(join(github.event.pull_request.labels.*.name), 'preview') || github.event.action == 'closed'
       with:
         action: delete
         server: ${{ secrets.K8S_API_SERVER }}
