@@ -1,4 +1,4 @@
-== Istio Workflow CI Demo
+== Istio Workspace CI Demo
 
 
 === Service A
