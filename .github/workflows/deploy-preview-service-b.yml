@@ -11,6 +11,7 @@ jobs:
   preview-deploy:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v1
     - name: Deploy preview
       uses: aslakknutsen/istio-workspace-action@master
       if: true == contains(join(github.event.pull_request.labels.*.name), 'preview')

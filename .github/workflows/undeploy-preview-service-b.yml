@@ -11,6 +11,7 @@ jobs:
   preview-undeploy:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v1
     - name: Undeploy preview
       uses: aslakknutsen/istio-workspace-action@master
       if: false == contains(join(github.event.pull_request.labels.*.name), 'preview') || github.event.action == 'closed'
