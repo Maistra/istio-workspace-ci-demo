@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Undeploy preview
-      uses: aslakknutsen/istio-workspace-action@master
+      uses: maistra/istio-workspace-action@master
       if: false == contains(join(github.event.pull_request.labels.*.name), 'preview') || github.event.action == 'closed'
       with:
         action: delete
