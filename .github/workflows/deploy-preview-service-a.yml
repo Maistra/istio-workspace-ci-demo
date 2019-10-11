@@ -1,0 +1,24 @@
+name: Deploy Preview Service A
+
+on:
+  pull_request:
+    types: [labeled]
+    paths:
+      - 'service-a/*'
+
+jobs:
+
+  preview-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Deploy preview
+      uses: maistra/istio-workspace-action@master
+      if: true == contains(join(github.event.pull_request.labels.*.name), 'preview')
+      with:
+        action: create
+        server: ${{ secrets.K8S_API_SERVER }}
+        token: ${{ secrets.K8S_TOKEN }}
+        session: ${{ github.head_ref }}
+        config: service-a/.ike.config.yaml
+        image: docker.io/aslakknutsen/istio-workspace-ci-demo-service-a:${{ github.sha }}

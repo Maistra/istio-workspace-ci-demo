@@ -1,0 +1,23 @@
+name: UnDeploy Preview Service A
+
+on:
+  pull_request:
+    types: [unlabeled, closed]
+    paths:
+      - 'service-a/*'
+
+jobs:
+
+  preview-undeploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Undeploy preview
+      uses: maistra/istio-workspace-action@master
+      if: false == contains(join(github.event.pull_request.labels.*.name), 'preview') || github.event.action == 'closed'
+      with:
+        action: delete
+        server: ${{ secrets.K8S_API_SERVER }}
+        token: ${{ secrets.K8S_TOKEN }}
+        config: service-a/.ike.config.yaml
+        session: ${{ github.head_ref }}

@@ -1,1 +1,15 @@
-== Istio Workflow CI Demo
+== Istio Workspace CI Demo
+
+Simple mono repo example of the istio workspace GitHub Action.
+
+On Pull Request:
+
+* Build images of each service if changed
+
+On Pull Request Labeling 'preview'
+
+* Deploy a preview route in the target environment with the built images
+
+=== Service A
+
+=== Service B

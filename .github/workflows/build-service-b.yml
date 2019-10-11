@@ -1,0 +1,23 @@
+name: Build Service A
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    paths:
+      - 'service-b/*'
+
+jobs:
+
+  build-service-a:
+ 
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      working-directory: service-b
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker build . --file Dockerfile --tag docker.io/aslakknutsen/istio-workspace-ci-demo-service-b:${{ github.sha }}
+        docker push docker.io/aslakknutsen/istio-workspace-ci-demo-service-b:${{ github.sha }}
+  

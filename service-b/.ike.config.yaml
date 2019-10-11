@@ -1,0 +1,7 @@
+create:
+  deployment: locations-v1
+  namespace: aslak-devconf
+  route: header:x-test-suite=aslak
+delete:
+  deployment: locations-v1
+  namespace: aslak-devconf
