@@ -4,4 +4,4 @@ EXPOSE 9080
 
 RUN microdnf install nc && microdnf clean all
 
-CMD ncat -kl --sh-exec 'echo -e "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\"caller\":\"service-a\", \"color\":\"#G00\"}"' 0.0.0.0 9080
+CMD ncat -kl --sh-exec 'echo -e "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\"caller\":\"service-a\", \"color\":\"#F00\"}"' 0.0.0.0 9080
