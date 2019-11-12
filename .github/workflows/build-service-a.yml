@@ -1,4 +1,4 @@
-name: Build Service B
+name: Build Service A
 
 on:
   pull_request:
